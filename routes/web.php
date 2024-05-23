@@ -1,76 +1,36 @@
 <?php
 
-use Illuminate\Support\Arr;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home', ['title' => 'Home']);
+
+//home controller
+Route::get('/', [HomeController::class,'index']);
+Route::get('/home' ,[HomeController::class,'home']);
+
+//about controller
+Route::get('/about' , [AboutController::class,'about']);
+
+//post controller
+Route::get('/create',[PostController::class,'store']);
+Route::get('/posts', [PostController::class, 'show']);
+Route::get('/posts/{post}', function (Post $post) {
+    return view('post', ['title' => 'Single Blog', 'post' => $post]);
 });
+Route::get('/create', [PostController::class, 'create_page']);
+Route::get('/posts/{id}',[PostController::class,'read_more']);
 
-Route::get('/about', function () {
-    return view('about', ['title' => 'About Us']);
-});
+//get id from url using route parameters
 
-Route::get('/home', function () {
-    return view('home', ['title' => 'Home Page']);
-});
-
-Route::get('/posts', function () {
-    return view('posts', ['title' => 'Blog', 'posts' => [
-            [
-                'id' => 1,
-                'title' => 'Title 1',
-                'content' => 'Content 1',
-                'author' => 'Author 1',
-                'body' => 'Lorem ipsum dolor sit amet, consectetur
-                    adipisicing elit. Asperiores consequuntur dolor dolore excepturi ipsum necessitatibus optio quas,
-                    recusandae repellendus. Eveniet?'
-            ],
-            [
-                'id' => 2,
-                'title' => 'Title 2',
-                'content' => 'Content 2',
-                'author' => 'Author 2',
-                'body' => 'Lorem ipsum dolor sit amet, consectetur
-                    adipisicing elit. Asperiores consequuntur dolor dolore excepturi ipsum necessitatibus optio quas,
-                    recusandae repellendus. Eveniet?'
-            ]
-        ]
-        ]
-    );
-});
-
-//get id from url
-Route::get('/posts/{id}', function ($id) {
-    $posts = [
-        [
-
-            'id' => 1,
-            'title' => 'Title 1',
-            'content' => 'Content 1',
-            'author' => 'Author 1',
-            'body' => 'Lorem ipsum dolor sit amet, consectetur
-                    adipisicing elit. Asperiores consequuntur dolor dolore excepturi ipsum necessitatibus optio quas,
-                    recusandae repellendus. Eveniet?'
-        ],
-        [
-            'id' => 2,
-            'title' => 'Title 2',
-            'content' => 'Content 2',
-            'author' => 'Author 2',
-            'body' => 'Lorem ipsum dolor sit amet, consectetur
-                    adipisicing elit. Asperiores consequuntur dolor dolore excepturi ipsum necessitatibus optio quas,
-                    recusandae repellendus. Eveniet?']
-    ];
-
-    $post = Arr::first($posts, function ($post) use ($id) {
-        return $post['id'] == $id;
-    });
-
-    return view('post', ['title' => 'Blog Single Post', 'post' => $post]);
-});
+//Route::get('/posts/{id}', function ($id) {
+//    return view('post', ['title' => 'Blog Single Post', 'post' => Post::find($id)]);
+//});
 
 
-Route::get('/contact', function () {
-    return view('contact', ['title' => 'Contact Us']);
-});
+
+//contact Controller
+Route::get('/contact', [ContactController::class, 'contact_me']);

@@ -1,6 +1,9 @@
 <x-layout>
     <x-slot:title>{{$title}}</x-slot:title>
     <!--Get author of Blog -->
+    <a href="/create">
+        Tambah Blog
+    </a>
     @foreach($posts as $post)
         <article class="py-8 max-w-screen-md border-amber-700">
             <div
